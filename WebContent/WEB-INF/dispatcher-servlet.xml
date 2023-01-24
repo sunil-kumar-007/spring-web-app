@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename" value="errors" />
+	</bean>
+
+	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<props>
+				<prop key="/insertstud.htm">insertStudController</prop>
+				<prop key="/home.htm">viewHomeController</prop>
+				<prop key="/editstud.htm">editStudentController</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="viewHomeController"
+		class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+		<property name="viewName" value="home" />
+	</bean>
+
+	<bean id="insertStudController" class="com.sf.controller.InsertStudentController">
+		<property name="formView" value="insertstud" />
+		<property name="commandClass" value="com.sf.command.StudentCommand" />
+		<property name="commandName" value="studCmd" />
+		<property name="validator" ref="studentValidator" />
+	</bean>
+	<bean id="editStudentController" class="com.sf.controller.EditStudentController">
+		<property name="formView" value="editstud" />
+		<property name="commandClass" value="com.sf.command.StudentCommand" />
+		<property name="commandName" value="studCmd" />
+		<property name="validator" ref="studentValidator" />
+	</bean>
+
+	<bean id="studentValidator" class="com.sf.validator.StudentValidator" />
+
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+</beans>
